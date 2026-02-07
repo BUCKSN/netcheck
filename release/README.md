@@ -5,7 +5,7 @@ Adding only one directory and desktop file.
 
 To install app just run
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh | sh
 ```
 To remove app run:
 ```bash
