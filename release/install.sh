@@ -29,6 +29,7 @@ mkdir -p "$SHARE_DIR"
 
 install -m 0755 "$TMP_DIR/$APP_NAME" "$SHARE_DIR/$APP_NAME"
 cp -r "$TMP_DIR/"* "$SHARE_DIR/"
+sudo ln -s $SHARE_DIR/$APP_NAME /usr/local/bin/netcheck
 
 echo "Creating desktop entry..."
 mkdir -p "$(dirname "$DESKTOP_FILE")"
@@ -38,7 +39,7 @@ Version=1.0
 Type=Application
 Name=netcheck
 Comment=A network availability checker for Linux
-Exec=$SHARE_DIR/$APP_NAME
+Exec=/usr/local/bin/netcheck
 Icon=$SHARE_DIR/data/flutter_assets/assets/images/icon.png
 Terminal=false
 Categories=Network;Utility;
