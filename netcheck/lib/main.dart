@@ -228,7 +228,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
   }
 
   void _minimizeToTray() async {
-    await windowManager.hide();
+    await windowManager.minimize();  // Стандартное сворачивание вместо hide()
     setState(() {
       _windowVisible = false;
     });
@@ -474,7 +474,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     switch (menuItem.key) {
       case 'show_hide':
         if (_windowVisible) {
-          windowManager.hide();
+          windowManager.minimize();  // Стандартное сворачивание вместо hide()
           setState(() {
             _windowVisible = false;
           });
