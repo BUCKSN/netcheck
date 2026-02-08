@@ -9,6 +9,7 @@
 - **🔔 System Tray Integration** - Runs minimized in system tray with visual status indicators
 - **📱 Clean, Modern UI** - Beautiful Flutter-based interface with smooth animations
 - **🎯 Flexible Address Input** - Supports IP addresses, hostnames, URLs with port specification
+- **🧠 Automatic Layout Correction for IP Input** - The program automatically detects and corrects Russian keyboard layout errors when entering IP addresses.
 - **📊 Visual Progress Indicators** - Animated timer and status bars for intuitive monitoring
 - **🔝 Always on Top** - Optional window pinning for constant visibility
 - **🖱️ Drag & Resize** - Fully resizable window with smooth dragging support
@@ -38,6 +39,10 @@ curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/instal
 - `8.8.8.8:53` - Check DNS port (53) connectivity
 - `google.com:443` - Check HTTPS port connectivity
 - `https://api.github.com` - Full URL support (automatically extracts host and port)
+- `8ю8ю8ю8` → converts to 8.8.8.8
+- `1ю1ю1ю1Ж8080` → correctly recognized as 1.1.1.1:8080
+- `192ю168ю0ю1Ж22` → corrected to 192.168.0.1:22
+- `8.8.8.8Ж53` → interpreted as 8.8.8.8:53
 
 ### Status Indicators
 - **🟢 Green** - Connection successful
@@ -55,7 +60,7 @@ curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/instal
 To completely remove NetCheck from your system:
 
 ```bash
-rm -rf /usr/local/bin/netcheck
+sudo rm -rf /usr/local/bin/netcheck
 rm -rf $HOME/.local/share/netcheck
 rm -rf $HOME/.local/share/applications/netcheck.desktop
 ```
@@ -77,6 +82,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **🔔 Интеграция с системным треем** - Работает в свернутом виде в системном трее с визуальными индикаторами
 - **📱 Чистый современный интерфейс** - Красивый интерфейс на основе Flutter с плавными анимациями
 - **🎯 Гибкий ввод адресов** - Поддержка IP-адресов, имен хостов, URL с указанием портов
+- **🧠 Автоисправление раскладки при вводе IP** - Программа автоматически распознаёт и исправляет русскую раскладку при вводе IP-адресов.
 - **📊 Визуальные индикаторы прогресса** - Анимированные таймеры и индикаторы статуса
 - **🔝 Поверх всех окон** - Опциональное закрепление окна для постоянной видимости
 - **🖱️ Перетаскивание и изменение размера** - Полноценно изменяемое окно с поддержкой плавного перетаскивания
@@ -100,12 +106,18 @@ curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/instal
 - **Без порта** (например, `google.com`, `192.168.1.1`) - Выполняется ICMP ping для проверки доступности хоста
 - **С портом** (например, `google.com:443`, `192.168.1.1:8080`) - Проверяется доступность конкретного TCP порта
 
+
 ### Примеры ввода
+
 - `google.com` - Проверка доступности домена через ping
 - `192.168.1.1` - Проверка доступности локального роутера через ping
 - `8.8.8.8:53` - Проверка доступности DNS порта (53)
 - `google.com:443` - Проверка доступности HTTPS порта
 - `https://api.github.com` - Полная поддержка URL (автоматически извлекает хост и порт)
+- `8ю8ю8ю8` → преобразуется в 8.8.8.8
+- `1ю1ю1ю1Ж8080` → корректно определится как 1.1.1.1:8080
+- `192ю168ю0ю1Ж22` → исправится до 192.168.0.1:22
+- `8.8.8.8Ж53` → будет интерпретировано как 8.8.8.8:53
 
 ### Индикаторы статуса
 - **🟢 Зеленый** - Подключение успешно
@@ -123,7 +135,7 @@ curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/instal
 Для полного удаления NetCheck из вашей системы:
 
 ```bash
-rm -rf /usr/local/bin/netcheck
+sudo rm -rf /usr/local/bin/netcheck
 rm -rf $HOME/.local/share/netcheck
 rm -rf $HOME/.local/share/applications/netcheck.desktop
 ```

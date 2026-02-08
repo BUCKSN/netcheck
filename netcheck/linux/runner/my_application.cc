@@ -26,7 +26,7 @@ static void my_application_activate(GApplication* application) {
   gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
   // 3. Системные настройки окна
-  gtk_window_set_icon_from_file(window, "/home/user/.local/share/netcheck/data/flutter_assets/assets/images/icon.png", NULL);
+  gtk_window_set_default_icon_name("netcheck");
   gtk_window_set_role(window, "netcheck");
   gtk_window_set_decorated(window, FALSE); // Без рамок ОС
   gtk_window_set_default_size(window, 300, 160);
