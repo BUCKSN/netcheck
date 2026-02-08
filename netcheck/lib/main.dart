@@ -12,7 +12,7 @@ const Size minimumSize = Size(255, 120);
 const Size maximumSize = Size(1920, 1080);
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
@@ -28,6 +28,7 @@ void main() async {
     await windowManager.setResizable(true);
     await windowManager.show();
     await windowManager.focus();
+    await windowManager.setOpacity(1.0);
     await windowManager.setMinimumSize(minimumSize);
     await windowManager.setMaximumSize(maximumSize);
   });
@@ -67,7 +68,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
   Timer? _autoCheckTimer;
   String _currentAddress = '';
   final FocusNode _focusNode = FocusNode();
-  
+
   Timer? _timerProgressTimer;
   double _timerProgress = 0.0;
   bool _timerPaused = false;
@@ -75,10 +76,10 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
   @override
   void initState() {
     super.initState();
-    
+
     trayManager.addListener(this);
     _hostController.text = 'ya.ru';
-    
+
     _focusNode.addListener(() {
       setState(() {
         _isTextFieldFocused = _focusNode.hasFocus;
@@ -89,9 +90,9 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
         }
       });
     });
-    
+
     _initTray();
-    
+
     Future.delayed(const Duration(milliseconds: 50), () {
       _checkHost();
       _startAutoCheck();
@@ -112,7 +113,8 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     try {
       await _updateTrayIcon();
       await _updateTrayMenu();
-      await trayManager.setToolTip('NetCheck\nАдрес: $_currentAddress\nСтатус: $_status');
+      await trayManager
+          .setToolTip('NetCheck\nАдрес: $_currentAddress\nСтатус: $_status');
     } catch (e) {
       // print('Ошибка инициализации трея: $e');
     }
@@ -120,12 +122,12 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
 
   Future<void> _updateTrayIcon() async {
     try {
-      String iconName = _statusColor == Colors.green 
-          ? 'tray_icon_green' 
-          : _statusColor == Colors.orange 
-              ? 'tray_icon_orange' 
+      String iconName = _statusColor == Colors.green
+          ? 'tray_icon_green'
+          : _statusColor == Colors.orange
+              ? 'tray_icon_orange'
               : 'tray_icon_red';
-      
+
       await trayManager.setIcon(
         Platform.isWindows
             ? 'assets/images/$iconName.ico'
@@ -159,7 +161,8 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
           MenuItem.separator(),
           MenuItem(
             key: 'toggle_auto_check',
-            label: _autoCheckEnabled ? 'Автопроверка: ВКЛ' : 'Автопроверка: ВЫКЛ',
+            label:
+                _autoCheckEnabled ? 'Автопроверка: ВКЛ' : 'Автопроверка: ВЫКЛ',
           ),
           MenuItem(
             key: 'toggle_always_on_top',
@@ -171,9 +174,10 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
           ),
         ],
       );
-      
+
       await trayManager.setContextMenu(menu);
-      await trayManager.setToolTip('NetCheck\nАдрес: $_currentAddress\nСтатус: $_shortStatus');
+      await trayManager.setToolTip(
+          'NetCheck\nАдрес: $_currentAddress\nСтатус: $_shortStatus');
     } catch (e) {
       // print('Ошибка обновления меню: $e');
     }
@@ -207,14 +211,14 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     setState(() {
       _autoCheckEnabled = !_autoCheckEnabled;
     });
-    
+
     if (_autoCheckEnabled) {
       _startAutoCheck();
       _checkHost();
     } else {
       _stopAutoCheck();
     }
-    
+
     _updateTrayMenu();
   }
 
@@ -222,13 +226,13 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     setState(() {
       _isAlwaysOnTop = !_isAlwaysOnTop;
     });
-    
+
     await windowManager.setAlwaysOnTop(_isAlwaysOnTop);
     _updateTrayMenu();
   }
 
   void _minimizeToTray() async {
-    await windowManager.minimize();  // Стандартное сворачивание вместо hide()
+    await windowManager.minimize(); // Стандартное сворачивание вместо hide()
     setState(() {
       _windowVisible = false;
     });
@@ -239,7 +243,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     _timerProgressTimer?.cancel();
     _timerProgress = 0.0;
     _timerPaused = false;
-    
+
     _timerProgressTimer = Timer.periodic(
       const Duration(milliseconds: 100),
       (timer) {
@@ -283,19 +287,19 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
   // Метод для очистки адреса до вида host:port
   void _cleanupAddress() {
     final text = _hostController.text.trim();
-    
+
     if (text.isEmpty) return;
-    
+
     // Парсим адрес
     final parsed = _parseHostAndPort(text);
     final host = parsed['host'] ?? '';
     final port = parsed['port'] ?? '';
-    
+
     if (host.isEmpty) return;
-    
+
     // Формируем чистый адрес
     final cleanAddress = port.isEmpty ? host : '$host:$port';
-    
+
     // Обновляем поле ввода только если адрес изменился
     if (text != cleanAddress) {
       _hostController.text = cleanAddress;
@@ -310,16 +314,16 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     if (_autoCheckEnabled) {
       _startTimerProgress();
     }
-    
+
     // Очищаем адрес только если поле ввода не активно
     if (!_isTextFieldFocused) {
       _cleanupAddress();
     }
-    
+
     final text = _hostController.text.trim();
-    
+
     if (text.isEmpty) return;
-    
+
     setState(() {
       _isChecking = true;
       _status = 'Проверяем...';
@@ -330,7 +334,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
     final parsed = _parseHostAndPort(text);
     final host = parsed['host'] ?? '';
     final port = parsed['port'] ?? '';
-    
+
     if (host.isEmpty) {
       setState(() {
         _status = '❌ Неверный адрес';
@@ -342,13 +346,13 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
       await _updateTrayMenu();
       return;
     }
-    
+
     final portInt = int.tryParse(port) ?? 0;
     _currentAddress = portInt == 0 ? host : '$host:$portInt';
 
     try {
       bool isUp;
-      
+
       if (portInt == 0) {
         isUp = await _pingHost(host);
         _status = '✅ $host';
@@ -358,7 +362,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
         _status = '✅ $host:$portInt';
         _shortStatus = '✅ $host:$portInt';
       }
-      
+
       setState(() {
         _statusColor = isUp ? Colors.green : Colors.orange;
         if (!isUp) {
@@ -366,7 +370,6 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
           _shortStatus = _shortStatus.replaceFirst('✅', '⚠️');
         }
       });
-      
     } catch (e) {
       setState(() {
         _status = '❌ Ошибка';
@@ -385,11 +388,29 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
 
   Map<String, String> _parseHostAndPort(String input) {
     final result = {'host': input, 'port': ''};
-    
+
     try {
-      final cleanInput = input.trim();
-      
-      final ipPortMatch = RegExp(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::(\d{1,5}))?$').firstMatch(cleanInput);
+      // 1. Предварительная очистка и исправление раскладки
+      String cleanInput = input.trim();
+
+      // Универсальный паттерн для поиска опечаток раскладки:
+      // [\.\u044e] — это либо точка, либо 'ю'
+      // [:\u0416] — это либо ':', либо 'Ж'
+      final typoPattern = RegExp(
+        r'^\d{1,3}[\.\u044e]\d{1,3}[\.\u044e]\d{1,3}[\.\u044e]\d{1,3}([:\u0416]\d{1,5})?$',
+        caseSensitive: false,
+      );
+
+      if (typoPattern.hasMatch(cleanInput)) {
+        // Приводим всё к стандартному виду: 'ю' -> '.', 'Ж' -> ':'
+        cleanInput = cleanInput.replaceAll('ю', '.').replaceAll('Ж', ':');
+      }
+
+      // 2. Основная логика парсинга (используем уже исправленный cleanInput)
+      final ipPortMatch =
+          RegExp(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::(\d{1,5}))?$')
+              .firstMatch(cleanInput);
+
       if (ipPortMatch != null) {
         result['host'] = ipPortMatch.group(1)!;
         if (ipPortMatch.group(2) != null) {
@@ -397,17 +418,19 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
         }
         return result;
       }
-      
-      if (cleanInput.contains('://') || cleanInput.contains('@') || cleanInput.contains('/')) {
+
+      // Обработка URL, доменов и портов
+      if (cleanInput.contains('://') ||
+          cleanInput.contains('@') ||
+          cleanInput.contains('/')) {
         String uriString = cleanInput;
         if (!cleanInput.contains('://')) {
           uriString = 'http://$cleanInput';
         }
-        
+
         final uri = Uri.tryParse(uriString);
         if (uri != null && uri.host.isNotEmpty) {
           result['host'] = uri.host;
-          
           if (uri.hasPort) {
             result['port'] = uri.port.toString();
           }
@@ -423,16 +446,78 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
         }
       }
     } catch (e) {
-      // print('Ошибка парсинга адреса: $e');
+      // Ошибка парсинга
     }
-    
+
     return result;
   }
 
+  // Map<String, String> _parseHostAndPort(String input) {
+  //   final result = {'host': input, 'port': ''};
+
+  //   try {
+  //     final cleanInput = input.trim();
+
+  //     final ipPortMatch =
+  //         RegExp(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})(?::(\d{1,5}))?$')
+  //             .firstMatch(cleanInput);
+  //     if (ipPortMatch != null) {
+  //       result['host'] = ipPortMatch.group(1)!;
+  //       if (ipPortMatch.group(2) != null) {
+  //         result['port'] = ipPortMatch.group(2)!;
+  //       }
+  //       return result;
+  //     }
+
+  //     if (cleanInput.contains('://') ||
+  //         cleanInput.contains('@') ||
+  //         cleanInput.contains('/')) {
+  //       String uriString = cleanInput;
+  //       if (!cleanInput.contains('://')) {
+  //         uriString = 'http://$cleanInput';
+  //       }
+
+  //       final uri = Uri.tryParse(uriString);
+  //       if (uri != null && uri.host.isNotEmpty) {
+  //         result['host'] = uri.host;
+
+  //         if (uri.hasPort) {
+  //           result['port'] = uri.port.toString();
+  //         }
+  //       }
+  //     } else if (cleanInput.contains(':')) {
+  //       final parts = cleanInput.split(':');
+  //       if (parts.length == 2) {
+  //         final portCandidate = parts[1];
+  //         if (RegExp(r'^\d{1,5}$').hasMatch(portCandidate)) {
+  //           result['host'] = parts[0];
+  //           result['port'] = portCandidate;
+  //         }
+  //       }
+  //     }
+  //   } catch (e) {
+  //     // print('Ошибка парсинга адреса: $e');
+  //   }
+
+  //   return result;
+  // }
+
   Future<bool> _pingHost(String host) async {
     try {
-      final result = await Process.run('ping', 
-          Platform.isWindows ? ['-n', '1', '-w', '2000', host] : ['-c', '1', '-W', '2', host]);
+      final result = await Process.run(
+          'ping',
+          Platform.isWindows
+              ? ['-n', '1', '-w', '2000', host]
+              : Platform.isMacOS
+                  ? [
+                      '-c',
+                      '1',
+                      '-W',
+                      '2000',
+                      host
+                    ] // macOS использует -W для таймаута
+                  : ['-c', '1', '-W', '2', host] // Linux
+          );
       return result.exitCode == 0;
     } catch (e) {
       return false;
@@ -441,8 +526,8 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
 
   Future<bool> _checkPort(String host, int port) async {
     try {
-      final socket = await Socket.connect(host, port, 
-          timeout: const Duration(seconds: 3));
+      final socket =
+          await Socket.connect(host, port, timeout: const Duration(seconds: 3));
       socket.close();
       return true;
     } catch (e) {
@@ -462,6 +547,29 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
   }
 
   @override
+  void onTrayIconMouseDown() {
+    _toggleWindow();
+    _updateTrayMenu();
+  }
+
+  void _toggleWindow() {
+    if (_windowVisible) {
+      windowManager.minimize(); // Стандартное сворачивание вместо hide()
+      setState(() {
+        _windowVisible = false;
+      });
+    } else {
+      windowManager.show();
+      windowManager.focus();
+      windowManager.setMinimumSize(minimumSize);
+      windowManager.setMaximumSize(maximumSize);
+      setState(() {
+        _windowVisible = true;
+      });
+    }
+  }
+
+  @override
   void onTrayIconRightMouseDown() {
     trayManager.popUpContextMenu();
   }
@@ -473,20 +581,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
   void onTrayMenuItemClick(MenuItem menuItem) {
     switch (menuItem.key) {
       case 'show_hide':
-        if (_windowVisible) {
-          windowManager.minimize();  // Стандартное сворачивание вместо hide()
-          setState(() {
-            _windowVisible = false;
-          });
-        } else {
-          windowManager.show();
-          windowManager.focus();
-          windowManager.setMinimumSize(minimumSize);
-          windowManager.setMaximumSize(maximumSize);
-          setState(() {
-            _windowVisible = true;
-          });
-        }
+        _toggleWindow();
         _updateTrayMenu();
         break;
       case 'toggle_auto_check':
@@ -556,15 +651,16 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                 builder: (context, constraints) {
                   final currentWidth = constraints.maxWidth;
                   final currentHeight = constraints.maxHeight;
-                  
+
                   final widthScale = currentWidth / windowWidth;
                   final heightScale = currentHeight / windowHeight;
-                  
-                  final uniformScale = widthScale < heightScale ? widthScale : heightScale;
+
+                  final uniformScale =
+                      widthScale < heightScale ? widthScale : heightScale;
                   final scale = uniformScale.clamp(0.8, 2.0);
-                  
+
                   const headerHeight = 30.0;
-                  
+
                   return Stack(
                     children: [
                       Column(
@@ -572,7 +668,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                           SizedBox(
                             height: headerHeight,
                             child: Stack(
-                              children: [                            
+                              children: [
                                 Positioned(
                                   right: 0,
                                   top: 0,
@@ -604,7 +700,9 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                                             onTap: _toggleAlwaysOnTop,
                                             child: Center(
                                               child: Icon(
-                                                _isAlwaysOnTop ? Icons.push_pin : Icons.push_pin_outlined,
+                                                _isAlwaysOnTop
+                                                    ? Icons.push_pin
+                                                    : Icons.push_pin_outlined,
                                                 size: 14,
                                                 color: Colors.white,
                                               ),
@@ -633,7 +731,6 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                                     ],
                                   ),
                                 ),
-                                
                                 Positioned.fill(
                                   child: Padding(
                                     padding: const EdgeInsets.only(left: 10),
@@ -656,13 +753,14 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                               ],
                             ),
                           ),
-                          
                           Expanded(
                             child: Container(
                               width: currentWidth,
-                              padding: EdgeInsets.fromLTRB(12 * scale, 0, 12 * scale, 0),
+                              padding: EdgeInsets.fromLTRB(
+                                  12 * scale, 0, 12 * scale, 0),
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
                                   // Поле ввода
@@ -706,7 +804,8 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                                       Container(
                                         height: 34 * scale,
                                         decoration: BoxDecoration(
-                                          color: Colors.black.withValues(alpha: 0.2),
+                                          color: Colors.black
+                                              .withValues(alpha: 0.2),
                                         ),
                                         padding: EdgeInsets.symmetric(
                                           horizontal: 12 * scale,
@@ -730,9 +829,11 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                                                   }
                                                 },
                                                 activeThumbColor: Colors.white,
-                                                activeTrackColor: Colors.black.withValues(alpha: 0.3),
+                                                activeTrackColor: Colors.black
+                                                    .withValues(alpha: 0.3),
                                                 inactiveThumbColor: Colors.grey,
-                                                inactiveTrackColor: Colors.black.withValues(alpha: 0.1),
+                                                inactiveTrackColor: Colors.black
+                                                    .withValues(alpha: 0.1),
                                               ),
                                             ),
                                             SizedBox(width: 12 * scale),
@@ -751,28 +852,33 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
                                       ),
                                     ],
                                   ),
-                                  
+
                                   // Индикатор таймера (над кнопкой)
                                   _buildTimerIndicator(scale),
-                                  
+
                                   // Кнопка проверки
                                   SizedBox(
                                     height: 32 * scale,
                                     child: ElevatedButton(
-                                      onPressed: _isChecking ? null : () {
-                                        // Всегда очищаем адрес при нажатии кнопки
-                                        _cleanupAddress();
-                                        _checkHost();
-                                      },
+                                      onPressed: _isChecking
+                                          ? null
+                                          : () {
+                                              // Всегда очищаем адрес при нажатии кнопки
+                                              _cleanupAddress();
+                                              _checkHost();
+                                            },
                                       style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.black.withValues(alpha: 0.3),
+                                        backgroundColor:
+                                            Colors.black.withValues(alpha: 0.3),
                                         foregroundColor: Colors.white,
                                         shape: const RoundedRectangleBorder(),
                                       ),
                                       child: FittedBox(
                                         fit: BoxFit.scaleDown,
                                         child: Text(
-                                          _isChecking ? '⏳ Проверка...' : 'Проверить сейчас',
+                                          _isChecking
+                                              ? '⏳ Проверка...'
+                                              : 'Проверить сейчас',
                                           style: TextStyle(
                                             fontSize: 14 * scale,
                                             fontWeight: FontWeight.bold,
