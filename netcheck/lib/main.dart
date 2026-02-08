@@ -31,6 +31,7 @@ void main() async {
     await windowManager.setOpacity(1.0);
     await windowManager.setMinimumSize(minimumSize);
     await windowManager.setMaximumSize(maximumSize);
+    await windowManager.setAsFrameless();
   });
 
   runApp(const NetCheckApp());
@@ -563,6 +564,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
       windowManager.focus();
       windowManager.setMinimumSize(minimumSize);
       windowManager.setMaximumSize(maximumSize);
+      windowManager.setAsFrameless();
       setState(() {
         _windowVisible = true;
       });
@@ -640,7 +642,7 @@ class _NetCheckWindowState extends State<NetCheckWindow> with TrayListener {
           body: Container(
             decoration: BoxDecoration(
               color: _statusColor,
-              border: Border.all(color: Colors.blueGrey.withValues(alpha: 0.2)),
+              // border: Border.all(color: Colors.blueGrey.withValues(alpha: 0.2)),
               // Скругляем окошко
               borderRadius: BorderRadius.circular(4),
             ),

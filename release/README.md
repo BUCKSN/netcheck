@@ -1,6 +1,6 @@
 # 🌐 NetCheck
 
-**A simple yet powerful network availability checker for Linux desktops**
+**A simple yet powerful network availability checker for desktops**
 
 ## ✨ Features
 
@@ -16,10 +16,25 @@
 
 ## 🚀 Quick Installation
 
-### One-command Installation
+## Linux
 ```bash
 sh -ci "$(curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh)"
 ```
+### 🗑️ Uninstallation
+
+To completely remove NetCheck from your system:
+
+```bash
+sudo rm -rf /usr/local/bin/netcheck
+rm -rf $HOME/.local/share/netcheck
+rm -rf $HOME/.local/share/applications/netcheck.desktop
+rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
+```
+## Windows
+[netcheck.zip](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck.zip)
+
+## MccOs
+[netcheck_installer.dmg](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck_installer.dmg)
 
 ## 📖 Usage
 
@@ -55,17 +70,6 @@ sh -ci "$(curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/rele
 - **Flutter Runtime** (Included, no separate install needed)
 - **System Tray** (GNOME, KDE, XFCE, MATE, Cinnamon compatible)
 
-## 🗑️ Uninstallation
-
-To completely remove NetCheck from your system:
-
-```bash
-sudo rm -rf /usr/local/bin/netcheck
-rm -rf $HOME/.local/share/netcheck
-rm -rf $HOME/.local/share/applications/netcheck.desktop
-rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
-```
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -90,10 +94,25 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🚀 Быстрая установка
 
-### Установка одной командой
+## Linux
 ```bash
 sh -ci "$(curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh)"
 ```
+## 🗑️ Удаление
+
+Для полного удаления NetCheck из вашей системы:
+
+```bash
+sudo rm -rf /usr/local/bin/netcheck
+rm -rf $HOME/.local/share/netcheck
+rm -rf $HOME/.local/share/applications/netcheck.desktop
+rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
+```
+## Windows
+[netcheck.zip](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck.zip)
+
+## MccOs
+[netcheck_installer.dmg](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck_installer.dmg)
 
 ## 📖 Использование
 
@@ -130,17 +149,6 @@ sh -ci "$(curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/rele
 - **Linux** (Ubuntu 24.04+, Debian 12+, Fedora 40+, Arch Linux)
 - **Среда Flutter** (Включена, не требует установки)
 - **Системный трей** (Совместимо с GNOME, KDE, XFCE, MATE, Cinnamon)
-
-## 🗑️ Удаление
-
-Для полного удаления NetCheck из вашей системы:
-
-```bash
-sudo rm -rf /usr/local/bin/netcheck
-rm -rf $HOME/.local/share/netcheck
-rm -rf $HOME/.local/share/applications/netcheck.desktop
-rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
-```
 
 ## 📄 Лицензия
 
