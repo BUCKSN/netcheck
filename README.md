@@ -18,7 +18,7 @@
 
 ### One-command Installation
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh | sh
+sh -ci "$(curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh)"
 ```
 
 ## 📖 Usage
@@ -63,6 +63,7 @@ To completely remove NetCheck from your system:
 sudo rm -rf /usr/local/bin/netcheck
 rm -rf $HOME/.local/share/netcheck
 rm -rf $HOME/.local/share/applications/netcheck.desktop
+rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
 ```
 
 ## 📄 License
@@ -91,7 +92,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Установка одной командой
 ```bash
-curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh | sh
+sh -ci "$(curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/install.sh)"
 ```
 
 ## 📖 Использование
@@ -138,6 +139,7 @@ curl -fsSL https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/instal
 sudo rm -rf /usr/local/bin/netcheck
 rm -rf $HOME/.local/share/netcheck
 rm -rf $HOME/.local/share/applications/netcheck.desktop
+rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
 ```
 
 ## 📄 Лицензия
