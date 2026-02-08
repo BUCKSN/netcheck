@@ -33,7 +33,7 @@ rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
 ## Windows
 [netcheck.zip](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck.zip)
 
-## MccOs
+## MacOs
 [netcheck_installer.dmg](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck_installer.dmg)
 
 ## 📖 Usage
@@ -111,7 +111,7 @@ rm -rf $HOME/.local/share/icons/hicolor/32x32/apps/netcheck.png
 ## Windows
 [netcheck.zip](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck.zip)
 
-## MccOs
+## MacOs
 [netcheck_installer.dmg](https://raw.githubusercontent.com/BUCKSN/netcheck/main/release/netcheck_installer.dmg)
 
 ## 📖 Использование
